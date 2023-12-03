@@ -20,7 +20,6 @@ service.interceptors.request.use(
   },
   error => {
     // 打印错误信息
-    console.log(error) // for debug
     return Promise.reject(error)
   }
 )
@@ -61,7 +60,6 @@ service.interceptors.response.use(
     }
   },
   error => {
-    console.log('err' + error) // for debug
     // Message({
     //   message: error.message,
     //   type: 'error',

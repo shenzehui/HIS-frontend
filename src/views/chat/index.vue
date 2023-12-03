@@ -39,7 +39,7 @@ export default {
 #app {
   margin: 20px auto;
   width: 800px;
-  height: 600px;
+  height: 800px;
   overflow: hidden;
   border-radius: 10px;
 

@@ -2,9 +2,10 @@ import Vue from "vue";
 import "../../utils/stomp";
 import SockJS from "../../utils/sockjs";
 import { getAllStaff } from "../../api/user";
+import userStore from "../../store/modules/user";
 
 const state = {
-  sessions: {},
+  sessions: [],
   staffs: [],
   currentSession: null,
   filterKey: "",
@@ -13,42 +14,49 @@ const state = {
 };
 const mutations = {
   changeCurrentSession(state, currentSession) {
-    Vue.set(state.isDot, state.name + "#" + currentSession.name, false);
+    Vue.set(
+      state.isDot,
+      userStore.state.name + "#" + currentSession.name,
+      false
+    );
     state.currentSession = currentSession;
   },
   addMessage(state, msg) {
-    let mss = state.sessions[state.name + "#" + msg.to];
+    let mss = state.sessions[userStore.state.name + "#" + msg.to];
     if (!mss) {
       // state.sessions[state.currentHr.username+'#'+msg.to] = [];
-      Vue.set(state.sessions, state.name + "#" + msg.to, []);
+      Vue.set(state.sessions, userStore.state.name + "#" + msg.to, []);
     }
-    state.sessions[state.name + "#" + msg.to].push({
+    state.sessions[userStore.state.name + "#" + msg.to].push({
       content: msg.content,
       date: new Date(),
       self: !msg.notSelf
     });
   },
   INIT_DATA(state) {
-    let data = localStorage.getItem("vue-chat-session");
-    console.log(data);
-    if (data) {
-      state.sessions = JSON.parse(JSON.stringify(data));
-    }
+    // let data = localStorage.getItem("vue-chat-session");
+    // if (data) {
+    //   state.sessions = JSON.parse(JSON.stringify(data));
+    // }
   },
   INIT_STAFF(state, data) {
-    console.log(data);
     state.staffs = data;
   }
 };
 const actions = {
   connect(context) {
+    var options = {
+      headers: {
+        token: userStore.state.token
+      }
+    };
     //收消息
-    context.state.stomp = Stomp.over(new SockJS("/ws/ep"));
+    context.state.stomp = Stomp.over(new SockJS("/ws/ep", null, options));
     context.state.stomp.connect(
       {},
       success => {
         //成功回调
-        context.state.stomp.subscribe("/user/queue/chat", msg => {
+        context.state.stomp.subscribe("/queue/chat", msg => {
           //订阅（需要添加/usr前缀）
           let receiveMsg = JSON.parse(msg.body);
           if (
@@ -65,7 +73,7 @@ const actions = {
             });
             Vue.set(
               context.state.isDot,
-              context.state.currentHr.username + "#" + receiveMsg.from,
+              context.state.name + "#" + receiveMsg.from,
               true
             );
           }
@@ -82,7 +90,8 @@ const actions = {
   initData(context) {
     context.commit("INIT_DATA");
     return new Promise((resolve, reject) => {
-      getAllStaff().then(response => {
+      getAllStaff()
+        .then(response => {
           console.log(response);
           if (response) {
             context.commit("INIT_STAFF", response.data);

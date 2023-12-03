@@ -4,7 +4,7 @@
              label-position="left">
 
       <div class="title-container">
-        <h3 class="title">智慧医疗HIS系统</h3>
+        <h3 class="title">系统登录</h3>
       </div>
 
       <el-form-item prop="username">
@@ -45,12 +45,24 @@
           </span>
         </el-form-item>
       </el-tooltip>
-
       <el-button :loading="loading" type="primary" style="width:100%;margin-bottom:30px;"
                  @click.native.prevent="handleLogin">登录
       </el-button>
 
-
+      <div style="float: right;padding:25px 0;margin-top: -30px;">
+        <el-button type="success" title="微信登录" size="mini" @click="authLogin" style="border:1px solid #fff;">
+          <svg-icon icon-class="wechat"/>
+          微信
+        </el-button>
+        <el-button type="danger" title="QQ登录" size="mini" @click="qqLogin" style="border:1px solid #fff;">
+          <svg-icon icon-class="qq"/>
+          QQ
+        </el-button>
+        <el-button type="primary" title="支付宝登录" size="mini" @click="authLogin" style="border:1px solid #fff;">
+          <svg-icon icon-class="zhifubao"/>
+          支付宝
+        </el-button>
+      </div>
     </el-form>
 
     <el-dialog title="Or connect with" :visible.sync="showDialog">
@@ -253,17 +265,23 @@ $light_gray: #eee;
 .login-container {
   min-height: 100%;
   width: 100%;
-  float: left;
   background: url("../../assets/images/login.png");
   background-size: 100% 100%;
   overflow: hidden;
+
   .login-form {
-    position: relative;
-    width: 520px;
+    background-color: #fff;
+    border-radius: 20px;
+    border: 1px solid #eaeaea;
+    box-shadow: 0 0 5px #cac6c6;
+    position: absolute;
+    width: 480px;
     max-width: 100%;
-    padding: 160px 35px 0;
-    margin: 0 auto;
+    padding: 30px 35px 0;
+    //margin: 0 auto;
     overflow: hidden;
+    top: 30%;
+    left: 10%;
   }
 
   .tips {
@@ -290,11 +308,10 @@ $light_gray: #eee;
     position: relative;
 
     .title {
-      font-size: 26px;
-      color: $dark_gray;
-      margin: 0px auto 40px auto;
+      font-size: 20px;
+      margin: 15px auto 20px auto;
       text-align: center;
-      font-weight: bold;
+      color: #505458;
     }
   }
 

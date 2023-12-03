@@ -12,9 +12,17 @@ const name = defaultSettings.title || "vue Element Admin"; // page title
 const port = 80; // dev port
 
 let proxyObj = {};
-proxyObj["/ws"] = {
+proxyObj['/ws'] = {
   ws: true,
   target: "ws://localhost:9999"
+};
+proxyObj[process.env.VUE_APP_BASE_API] = {
+  //target服务器ip
+  target: `http://localhost:9999`,
+  changeOrigin: true,
+  pathRewrite: {
+    ["^" + process.env.VUE_APP_BASE_API]: ""
+  }
 };
 
 // All configuration item explanations can be find in https://cli.vuejs.org/config/
@@ -38,18 +46,8 @@ module.exports = {
       warnings: false,
       errors: true
     },
-    proxy: {
-      // change xxx-api/login => mock/login
-      // detail: https://cli.vuejs.org/config/#devserver-proxy
-      [process.env.VUE_APP_BASE_API]: {
-        //target服务器ip
-        target: `http://localhost:9999`,
-        changeOrigin: true,
-        pathRewrite: {
-          ["^" + process.env.VUE_APP_BASE_API]: ""
-        }
-      }
-    }
+    host: 'localhost',
+    proxy: proxyObj
     //删除下一行，否则会导致跨域问题
     //after: require('./mock/mock-server.js')
   },

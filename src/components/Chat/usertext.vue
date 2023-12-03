@@ -9,7 +9,6 @@
 </template>
 
 <script>
-import { mapState } from "vuex";
 
 export default {
   name: "uesrtext",
@@ -27,12 +26,15 @@ export default {
     },
     stomp() {
       return this.$store.getters.stomp;
+    },
+    username(){
+      return this.$store.getters.name
     }
   },
   methods: {
     addMessage(e) {
       if (e.ctrlKey && e.keyCode === 13 && this.content.length) {
-        let msgObj = new Object();
+        let msgObj = {};
         msgObj.to = this.currentSession.username;
         msgObj.content = this.content;
         this.stomp.send(

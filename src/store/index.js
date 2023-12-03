@@ -17,6 +17,8 @@ const modules = modulesFiles.keys().reduce((modules, modulePath) => {
   return modules;
 }, {});
 
+console.log(modules)
+
 const store = new Vuex.Store({
   modules,
   getters
@@ -27,7 +29,6 @@ store.watch(
     return state.sessions;
   },
   function(val) {
-    console.log("CHANGE: ", val);
     localStorage.setItem("vue-chat-session", JSON.stringify(val));
   },
   {

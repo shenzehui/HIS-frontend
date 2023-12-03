@@ -8,7 +8,7 @@
         <div class="main" :class="{ self: entry.self }">
           <img
             class="avatar"
-            :src="entry.self ? userface : currentSession.userface"
+            :src="entry.self ? avatar : currentSession.avatar"
             alt=""
           />
           <p class="text">{{ entry.content }}</p>
@@ -19,7 +19,7 @@
 </template>
 
 <script>
-import { mapState } from "vuex";
+import {mapState} from "vuex";
 
 export default {
   name: "message",
@@ -27,10 +27,13 @@ export default {
     currentSession() {
       return this.$store.getters.currentSession;
     },
-    username(){
+    username() {
       return this.$store.getters.name
     },
-    sessions(){
+    avatar() {
+      return this.$store.getters.avatar
+    },
+    sessions() {
       return this.$store.getters.sessions
     }
   },
@@ -47,7 +50,7 @@ export default {
     // 发送消息后滚动到底部,这里无法使用原作者的方法，也未找到合理的方法解决，暂用setTimeout的方法模拟
     "scroll-bottom"(el) {
       //console.log(el.scrollTop);
-      setTimeout(function() {
+      setTimeout(function () {
         el.scrollTop += 9999;
       }, 1);
     }

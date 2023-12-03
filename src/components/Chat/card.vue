@@ -1,7 +1,7 @@
 <template>
   <div id="card">
     <header>
-      <img class="avatar" v-bind:src="userface" v-bind:alt="name" />
+      <img class="avatar" v-bind:src="doneTodosCount" v-bind:alt="name"/>
       <p class="name">{{ name }}</p>
     </header>
     <footer>
@@ -20,10 +20,14 @@ export default {
   name: "card",
   data() {
     return {
-      userface: "https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif",
       name: this.$store.state.user.name
     };
   },
+  computed: {
+    doneTodosCount() {
+      return this.$store.getters.avatar
+    }
+  }
 };
 </script>
 

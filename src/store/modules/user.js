@@ -1,6 +1,6 @@
-import { login, logout, getInfo } from "@/api/user";
-import { getToken, setToken, removeToken } from "@/utils/auth";
-import router, { resetRouter } from "@/router";
+import {login, logout, getInfo} from "@/api/user";
+import {getToken, setToken, removeToken} from "@/utils/auth";
+import router, {resetRouter} from "@/router";
 
 const state = {
   token: getToken(),
@@ -15,8 +15,19 @@ const state = {
 };
 
 const mutations = {
+  SET_CURRENT_USER: (state, user) => {
+    state.id = user.id;
+    state.name = user.name;
+    state.avatar = user.avatar;
+    state.introduction = user.title;
+    state.roleId = user.roleId;
+    state.deptId = user.deptId;
+    state.registrationRankId = user.registrationRankId;
+  },
+
   SET_ID: (state, id) => {
     state.id = id;
+
   },
   SET_TOKEN: (state, token) => {
     state.token = token;
@@ -46,14 +57,15 @@ const mutations = {
 
 const actions = {
   // 用户登录
-  login({ commit }, userInfo) {
-    const { username, password } = userInfo;
+  login({commit}, userInfo) {
+    const {username, password} = userInfo;
     return new Promise((resolve, reject) => {
-      login({ username: username.trim(), password: password })
+      login({username: username.trim(), password: password})
         .then(response => {
-          const { data } = response;
+          const {data} = response;
           commit("SET_TOKEN", data.tokenHead + data.token);
           setToken(data.tokenHead + data.token);
+          commit('SET_CURRENT_USER', data.login_user);
           resolve();
         })
         .catch(error => {
@@ -63,15 +75,15 @@ const actions = {
   },
 
   // 获取用户信息
-  getInfo({ commit }) {
+  getInfo({commit}) {
     return new Promise((resolve, reject) => {
       getInfo()
         .then(response => {
-          const { data } = response;
+          const {data} = response;
           if (!data) {
             reject("验证失败，请重新登录！");
           }
-          const { deptId, id, name, roleId } = data;
+          const {deptId, id, name, roleId} = data;
           commit("SET_DEPTID", deptId);
           commit("SET_ID", id);
           commit("SET_NAME", name);
@@ -87,7 +99,7 @@ const actions = {
   },
 
   // 用户登出
-  logout({ commit, state }) {
+  logout({commit, state}) {
     return new Promise((resolve, reject) => {
       logout(state.token)
         .then(() => {
@@ -104,7 +116,7 @@ const actions = {
   },
 
   // 删除token
-  resetToken({ commit }) {
+  resetToken({commit}) {
     return new Promise(resolve => {
       commit("SET_TOKEN", "");
       commit("SET_ROLES", []);
@@ -114,14 +126,14 @@ const actions = {
   },
 
   // 动态编辑用户权限及路由
-  changeRoles({ commit, dispatch }, role) {
+  changeRoles({commit, dispatch}, role) {
     return new Promise(async resolve => {
       const token = role + "-token";
 
       commit("SET_TOKEN", token);
       setToken(token);
 
-      const { roles } = await dispatch("getInfo");
+      const {roles} = await dispatch("getInfo");
 
       resetRouter();
 
@@ -131,7 +143,7 @@ const actions = {
 
       router.addRoutes(accessRoutes);
 
-      dispatch("tagsView/delAllViews", null, { root: true });
+      dispatch("tagsView/delAllViews", null, {root: true});
 
       resolve();
     });
