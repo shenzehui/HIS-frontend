@@ -38,7 +38,7 @@ export default {
 <style lang="scss" scoped>
 #app {
   margin: 20px auto;
-  width: 800px;
+  width: 80%;
   height: 800px;
   overflow: hidden;
   border-radius: 10px;

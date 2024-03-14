@@ -172,7 +172,7 @@ export default {
               this.loading = false
             })
             .catch(() => {
-              this.$message.error('error');
+              this.$message.error('用户名或密码错误');
               this.loading = false
             })
         } else {

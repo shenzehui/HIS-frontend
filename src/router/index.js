@@ -104,7 +104,7 @@ export const asyncRoutes = [
         path: 'chat',
         component: () => import('@/views/chat'),
         name: 'chat',
-        meta: { title: '在线聊天', icon: 'dashboard', affix: true }
+        meta: { title: '在线聊天', icon: 'wechat', affix: true }
       }
     ]
   },

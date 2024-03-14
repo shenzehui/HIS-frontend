@@ -1,7 +1,7 @@
 <template>
   <div id="card">
     <header>
-      <img class="avatar" v-bind:src="doneTodosCount" v-bind:alt="name"/>
+      <img class="avatar" v-bind:src="imgUrl == '' ? 'https://pic2.zhimg.com/80/v2-85ef8fc1319802865d36d40144a8e97c_l.jpg': imgUrl" v-bind:alt="name"/>
       <p class="name">{{ name }}</p>
     </header>
     <footer>
@@ -24,7 +24,7 @@ export default {
     };
   },
   computed: {
-    doneTodosCount() {
+    imgUrl() {
       return this.$store.getters.avatar
     }
   }

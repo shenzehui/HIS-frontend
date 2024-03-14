@@ -8,7 +8,7 @@
         }"
         v-on:click="changeCurrentSession(item)"
       >
-        <img class="avatar" :src="(item.avatar == null) ? defaultUrl : item.avatar"
+        <img class="avatar" :src="(item.avatar == null || item.avatar == '') ? defaultUrl : item.avatar"
              :alt="item.name"/>
         <span>{{item.name}}</span>
       </li>

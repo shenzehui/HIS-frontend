@@ -1,5 +1,5 @@
 module.exports = {
-  title: '云医院',
+  title: '门诊挂号系统',
 
   /**
    * @type {boolean} true | false
